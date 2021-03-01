@@ -15,25 +15,34 @@ The shunt connector procedure consits of 10 steps:
 9. Test latency
 10. Print summary
 
-Each step is controlled through the provided configuration file.
+Each step is controlled through the provided configuration file and can be replaced by a custom implementation.
 
-Each run produces a log file under ***log***. Created models are also saved under this folder.
+### Logging
 
-CIFAR10 and CIFAR100 experiments can be run out of the box. Using cityscapes, requires preparing the dataset like in the official tensorflow [repository](https://github.com/tensorflow/models/tree/master/research/deeplab/datasets).
+Each run produces a log file under ***log*** where summary of models and other results of the run are stored. The summary produced by the ***print_summary()*** call is also stored in this file.
+
+Created models are saved under this folder in the .h5 format.
+
+The path to the current logging folder is saved in ***shunt_connector.folder_name_logging***, such that it can be used in additional custom code.
 
 ## Installation
 
 Run in root directory:
 `pip install -r requirements.txt`
 
-## Usage
+### Basic Requirements
+
+Tensorflow 2.X, tested for Tensorflow >= 2.3
+
+
+## Examples
 
 Examples show how this repository should be used.
 
 For a "standard" experiment, use the ***standard_main.py*** under examples.
 This main file executes the shunt connector procedure according to the provided configuration file.
 
-For knowledge distillation, two other scripts are available under examples. One in pure script format and another one in Jupyter form.
+For knowledge distillation, two scripts are available under examples. One in pure script format and another one in Jupyter form.
 
 ### Configuration File
 
@@ -42,3 +51,29 @@ All parameters for models, training and validation are set through a configurati
 ### Custom Losses and Metrics
 
 For semantic segmentation tasks, custom loss and metric have to be used. They are defined in ***utils/custom_loss_metrics.py***.
+
+## Usage
+
+A basic shunt insertion on the built in network architectures and datasets can be done by creating a new ***ShuntConnector*** object, initializing it with a ***configparser*** object and calling ***shunt_connector.execute()*** . This calls all 10 steps of the procedure serially. 
+
+### Datasets
+
+CIFAR10 and CIFAR100 experiments can be run out of the box, the datasets will be downloaded through Keras. Using cityscapes, requires preparing the dataset like in the official tensorflow [repository](https://github.com/tensorflow/models/tree/master/research/deeplab/datasets).
+
+Other datasets have to be loaded through custom code by replacing the ***create_dataset()*** call accordingly.
+
+### Models
+
+MobileNetV2 and MobileNetV3 are built-in in this repository, using slightly altered implementations from the keras_applications [repository](https://github.com/keras-team/keras-applications).
+
+The sementic segmentation version introduced in the MobileNetV3 [paper](https://arxiv.org/abs/1905.02244) is also implemented in this repository.
+
+## Custom Implementations
+
+Each of the 10 steps can be replaced by a custom implementation. The methods are built in a way, that you can replace one of the steps but reuse all other ones. For example, it is possible to call ***create_dataset()*** and ***create_original_model()*** but then use a custom training procedure for training the original model. Afterwards you can still call ***create_shunt_model()*** and procede with other built-in methods. In order for this to work, certain variables have to be set at each step. If one variable is missing after calling a customized call, the program will terminate and an appropriate error message is shown.
+
+Custom losses and metrics can be customized by setting the ***shunt_connector.task_losses*** and ***shunt_connector.task_metrics*** fields. Note that both fields have to hold **LISTS**, even when using only a single loss or metric. 
+
+### Custom datasets
+
+How to use custom datasets can be seen in the ***train_railsem*** example. It is necessary that the dataset_props dictionary gets properly initialized during the creation of the custom dataset. The field ***dataset_train*** and ***dataset_val*** hold tf.data objects and are used for training and validation accordingly. Note that these datasets have to be not 'batched' in this step, since the get 'batched' during the training or validation step using the batch size set in the corresponding config field.

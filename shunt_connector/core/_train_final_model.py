@@ -1,8 +1,22 @@
 # -*- coding: utf-8 -*-
 """
 Step #8 of the shunt connection procedure.
-License: TBD
+
+Copyright 2021 Christian Doppler Laboratory for Embedded Machine Learning
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
+
 # Built-in/Generic Imports
 from pathlib import Path
 import logging
@@ -15,6 +29,16 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau
 from shunt_connector.utils.custom_callbacks import SaveNestedModelCallback, LearningRateSchedulerCallback, PolyLearningRateCallback
 from shunt_connector.utils.custom_loss_metric import create_mean_squared_diff_loss, create_ACE_loss, ACE_metric, create_negative_sum_loss
 from shunt_connector.shunt.create_shunt_trainings_model import create_shunt_trainings_model
+
+__author__ = 'Bernhard Haas'
+__copyright__ = 'Copyright 2021, Christian Doppler Laboratory for ' \
+                'Embedded Machine Learning'
+__credits__ = ['']
+__license__ = 'Apache 2.0'
+__version__ = '1.0.0'
+__maintainer__ = 'Bernhard Haas'
+__email__ = 'bernhardhaas55@gmail.com'
+__status__ = 'Release'
 
 def train_final_model(self):
     """This method represents step #8 of the shunt connection procedure.

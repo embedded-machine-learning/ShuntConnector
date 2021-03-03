@@ -74,6 +74,18 @@ Each of the 10 steps can be replaced by a custom implementation. The methods are
 
 Custom losses and metrics can be customized by setting the ***shunt_connector.task_losses*** and ***shunt_connector.task_metrics*** fields. Note that both fields have to hold **LISTS**, even when using only a single loss or metric. 
 
+When defining custom models, losses or metrics, they have do be defined under Tensorflow's distributation scope. The scope is initialized when the ShuntConnector object is created and can be entered by calling ***shunt_connector.activate_distribution_scope()*** .
+
 ### Custom datasets
 
 How to use custom datasets can be seen in the ***train_railsem*** example. It is necessary that the dataset_props dictionary gets properly initialized during the creation of the custom dataset. The field ***dataset_train*** and ***dataset_val*** hold tf.data objects and are used for training and validation accordingly. Note that these datasets have to be not 'batched' in this step, since the get 'batched' during the training or validation step using the batch size set in the corresponding config field.
+
+### Custom models
+
+Custom models can be used by calling ***set_..._model()*** instead of ***create_..._model()*** . The set model will be saved in the logging folder and FLOPs get calculated for the custom model. Note that this model does not have to be compiled, since it will be compiled before training and validation with the task specific tasks.
+
+The example ***create_s_and_e_shunt_model.ipynb*** shows this process for using a custom shunt architecture.
+
+### Custom training policies
+
+It is suggested to reuse as much code as possible when writing custom training procedures. How this can be done effficiently can be seen in ***train_final_ACE.py*** or ***train_final_dark_knowledge.ipynb*** in the examples folder, where the training of the final model was replaced by a knowledge distillation step.

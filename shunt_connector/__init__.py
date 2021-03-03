@@ -1,7 +1,20 @@
 # -*- coding: utf-8 -*-
 """
 Implements the shunt connector object. Initialization file for the whole class.
-License: TBD
+
+Copyright 2021 Christian Doppler Laboratory for Embedded Machine Learning
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 
 # Built-in/Generic Imports
@@ -23,6 +36,16 @@ from shunt_connector.core import _execute, _parse_config, _create_dataset, _crea
                                  _calc_knowledge_quotient, \
                                  _create_shunt_model, _train_shunt_model, _create_final_model, _train_final_model, \
                                  _test_latency, _print_summary
+
+__author__ = 'Bernhard Haas'
+__copyright__ = 'Copyright 2021, Christian Doppler Laboratory for ' \
+                'Embedded Machine Learning'
+__credits__ = ['']
+__license__ = 'Apache 2.0'
+__version__ = '1.0.0'
+__maintainer__ = 'Bernhard Haas'
+__email__ = 'bernhardhaas55@gmail.com'
+__status__ = 'Release'
 
 class ShuntConnector():
 

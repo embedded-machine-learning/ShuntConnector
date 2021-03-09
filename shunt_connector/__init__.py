@@ -126,16 +126,16 @@ class ShuntConnector():
         self.latency_dict = {}
 
     def activate_distribution_scope(self):
-        """[Return the scope of the distribution strategy used in the ShuntConnector object.
-            Should be used like: with shunt_connector.activate_distribution_scope():]
+        """Return the scope of the distribution strategy used in the ShuntConnector object.
+            Should be used like: with shunt_connector.activate_distribution_scope():
 
         Returns:
-            [tf.distribution_strategy.scope]: [Distribution strategy scopse used in the ShuntConnector object]
+            tf.distribution_strategy.scope: [istribution strategy scopse used in the ShuntConnector object
         """
         return self.distribute_strategy.scope()
 
     def load_task_losses_metrics(self):
-        """[Initializes losses and metrics used for all model operations based on the self.task field.]
+        """Initializes losses and metrics used for all model operations based on the self.task field.
         """
         if self.dataset_props['task'] is None:  # except if it was not found in config file
             return

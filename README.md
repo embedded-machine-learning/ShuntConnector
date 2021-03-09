@@ -86,6 +86,6 @@ Custom models can be used by calling ***set_..._model()*** instead of ***create_
 
 The example ***create_s_and_e_shunt_model.ipynb*** shows this process for using a custom shunt architecture.
 
-### Custom training policies
+### Custom training procedures
 
 It is suggested to reuse as much code as possible when writing custom training procedures. How this can be done effficiently can be seen in ***train_final_ACE.py*** or ***train_final_dark_knowledge.ipynb*** in the examples folder, where the training of the final model was replaced by a knowledge distillation step.

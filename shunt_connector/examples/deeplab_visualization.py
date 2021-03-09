@@ -97,9 +97,15 @@ if __name__ == '__main__':
 
     for img, label in data_val.take(20):
 
+        img = img + 1.0
+        ax = plt.subplot(141)
+        plt.imshow(img)
+        ax.tick_params(labelbottom=False, labelleft=False)
+        plt.title('Image')
+
         label = tf.where(tf.equal(label, 255), 19 * tf.ones_like(label), label)
         print(label.shape)
-        ax = plt.subplot(131)
+        ax = plt.subplot(142)
         plt.imshow(color_map[tf.squeeze(label)])
         ax.tick_params(labelbottom=False, labelleft=False)
         plt.title("Ground truth")
@@ -107,7 +113,7 @@ if __name__ == '__main__':
         pred = connector.original_model.predict(img)
         label = np.argmax(pred.squeeze(), axis=-1)
 
-        ax = plt.subplot(132)
+        ax = plt.subplot(143)
         plt.imshow(color_map[label])
         ax.tick_params(labelbottom=False, labelleft=False)
         plt.title('Original model')
@@ -116,13 +122,12 @@ if __name__ == '__main__':
         pred = connector.final_model.predict(img)
         label = np.argmax(pred.squeeze(), axis=-1)
 
-        ax = plt.subplot(133)
+        ax = plt.subplot(144)
         plt.imshow(color_map[label])
         ax.tick_params(labelbottom=False, labelleft=False)
         plt.title('Shunt inserted model')
         figure = plt.gcf()  # get current figure    
         figure.set_size_inches(16, 9) # set figure's size manually to your full screen (32x18)
-        #plt.show()
         plt.savefig("cityscapes_1025_2049_original_model_{}".format(i))
         
         plt.show()

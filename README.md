@@ -27,8 +27,11 @@ The path to the current logging folder is saved in ***shunt_connector.folder_nam
 
 ## Installation
 
-Run in root directory:
+Run in root directory to install all dependencies:
 `pip install -r requirements.txt`
+
+If you want to install just the shunt connector package, run:
+`pip install -e .`
 
 ### Basic Requirements
 

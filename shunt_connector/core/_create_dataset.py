@@ -51,31 +51,36 @@ def create_dataset(self):
 
         self.dataset_props['num_classes'] = 10
         self.dataset_props['input_shape'] = (32,32,3)
-        self.dataset_props['len_train_data'] = 50000
+        self.dataset_props['len_train_data'] = 40000
         self.dataset_props['len_val_data'] = 10000
+        self.dataset_props['len_test_data'] = 10000
         self.dataset_props['task'] = 'classification'
         self.test_batchsize = self.dataset_params['test_batchsize']
 
         self.dataset_train = custom_generators.create_CIFAR_dataset(num_classes=10,
-                                                                    is_training=True)
+                                                                    dataset_type='train')
         self.dataset_val = custom_generators.create_CIFAR_dataset(num_classes=10,
-                                                                  is_training=False)
-
+                                                                  dataset_type='val')
+        self.dataset_test = custom_generators.create_CIFAR_dataset(num_classes=10,
+                                                                   dataset_type='test')
         print('CIFAR10 was loaded successfully!')
 
     if self.dataset_params['name'] == 'CIFAR100':
 
         self.dataset_props['num_classes'] = 100
         self.dataset_props['input_shape'] = (32,32,3)
-        self.dataset_props['len_train_data'] = 50000
+        self.dataset_props['len_train_data'] = 40000
         self.dataset_props['len_val_data'] = 10000
+        self.dataset_props['len_test_data'] = 10000
         self.dataset_props['task'] = 'classification'
         self.test_batchsize = self.dataset_params['test_batchsize']
 
         self.dataset_train = custom_generators.create_CIFAR_dataset(num_classes=100,
-                                                                    is_training=True)
+                                                                    dataset_type='train')
         self.dataset_val = custom_generators.create_CIFAR_dataset(num_classes=100,
-                                                                  is_training=False)
+                                                                  dataset_type='val')
+        self.dataset_test = custom_generators.create_CIFAR_dataset(num_classes=100,
+                                                                   dataset_type='test')
         print('CIFAR100 was loaded successfully!')
 
     if self.dataset_params['name'] == 'cityscapes':

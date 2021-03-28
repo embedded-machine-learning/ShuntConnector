@@ -79,6 +79,7 @@ def create_shunt_model(self):
             output_shape_shunt = self.original_model.get_layer(index=self.shunt_params['locations'][1]).output_shape[1:]
             if isinstance(output_shape_shunt, list):
                 output_shape_shunt = output_shape_shunt[0][1:]
+
             self.shunt_model = Architectures.createShunt(input_shape_shunt,
                                                          output_shape_shunt,
                                                          arch=self.shunt_params['arch'],

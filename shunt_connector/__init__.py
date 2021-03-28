@@ -105,8 +105,9 @@ class ShuntConnector():
                                    cross_device_ops=tf.distribute.ReductionToOneDevice())
 
         # init necessary fields
-        self.dataset_val = None
         self.dataset_train = None
+        self.dataset_val = None
+        self.dataset_test = None
         self.original_model = None
         self.shunt_model = None
         self.shunt_trainings_model = None
@@ -118,7 +119,8 @@ class ShuntConnector():
                               'num_classes': None,
                               'input_shape': None,
                               'len_train_data': None,
-                              'len_val_data': None}
+                              'len_val_data': None,
+                              'len_test_data': None}
         self.test_batchsize = 1
         # measurements
         self.accuracy_dict = {}

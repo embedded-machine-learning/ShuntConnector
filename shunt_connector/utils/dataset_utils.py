@@ -20,6 +20,7 @@ limitations under the License.
 import tensorflow as tf
 from tensorflow.keras.datasets import cifar10, cifar100
 from tensorflow.keras.utils import to_categorical
+from sklearn.model_selection import train_test_split
 
 # Own modules
 import shunt_connector.utils.preprocess_utils_cityscapes as preprocess_utils
@@ -46,6 +47,8 @@ def load_and_preprocess_CIFAR(num_classes=10):
     x_test = x_test.astype('float32')  #argmax_ch
     x_train = x_train.astype('float32')  #argmax_ch
 
+    x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=42, stratify=y_train)
+
     def ch_wise_normalization(X_type, ch):
         mean_ch = x_train[:, :, :, ch].mean()
         std_ch = x_train[:, :, :, ch].std()
@@ -55,14 +58,18 @@ def load_and_preprocess_CIFAR(num_classes=10):
     x_test[:, :, :, 0]  = ch_wise_normalization(x_test, 0)
     x_test[:, :, :, 1]  = ch_wise_normalization(x_test, 1)
     x_test[:, :, :, 2]  = ch_wise_normalization(x_test, 2)
+    x_val[:, :, :, 0]  = ch_wise_normalization(x_val, 0)
+    x_val[:, :, :, 1]  = ch_wise_normalization(x_val, 1)
+    x_val[:, :, :, 2]  = ch_wise_normalization(x_val, 2)
     x_train[:, :, :, 0]  = ch_wise_normalization(x_train, 0)
     x_train[:, :, :, 1]  = ch_wise_normalization(x_train, 1)
     x_train[:, :, :, 2]  = ch_wise_normalization(x_train, 2)
 
+    y_val = to_categorical(y_val, num_classes)
     y_test  = to_categorical(y_test, num_classes)
     y_train = to_categorical(y_train, num_classes)
 
-    return (x_train, y_train), (x_test, y_test)
+    return (x_train, y_train), (x_val, y_val), (x_test, y_test)
 
 
 def cityscapes_preprocess_image_and_label(image,

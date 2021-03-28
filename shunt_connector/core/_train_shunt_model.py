@@ -25,6 +25,7 @@ import logging
 # Libs
 import tensorflow.keras as keras
 from tensorflow.keras.callbacks import ReduceLROnPlateau
+import numpy as np
 
 # Own modules
 from shunt_connector.utils.custom_callbacks import SaveNestedModelCallback, LearningRateSchedulerCallback
@@ -100,6 +101,12 @@ def train_shunt_model(self):
                                                   verbose=1,
                                                   callbacks=[callback_checkpoint, callback_learning_rate])
 
+    history_folder = Path(self.folder_name_logging) / Path('training_shunt_model_history')
+    history_folder.mkdir(parents=True, exist_ok=True)
+
+    for key in history_shunt.history.keys():
+        np.save(history_folder / Path(key), history_shunt.history[key])
+
     self.shunt_model.load_weights(str(Path(self.folder_name_logging, "shunt_model_weights.h5"))) # load best weights from training
 
     keras.models.save_model(self.shunt_model, Path(self.folder_name_logging, "shunt_model.h5"))
@@ -133,8 +140,8 @@ def test_shunt_model(self):
     if not self.shunt_model:
         raise Exception('Shunt model not yet initialized! Have you called create_shunt_model?')
 
-    val_loss_shunt = self.shunt_training_model.evaluate(self.dataset_val.batch(self.test_batchsize),
-                                                        steps=self.dataset_props['len_val_data']//self.test_batchsize,
+    val_loss_shunt = self.shunt_training_model.evaluate(self.dataset_test.batch(self.test_batchsize),
+                                                        steps=self.dataset_props['len_test_data']//self.test_batchsize,
                                                         verbose=1)
 
     print('Loss: {:.5f}'.format(val_loss_shunt))

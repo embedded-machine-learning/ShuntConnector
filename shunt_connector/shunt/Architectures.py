@@ -105,10 +105,9 @@ def createArch5(input_shape, output_shape, num_stride_layers, use_se, dilation_r
     if num_stride_layers > 0:
         x = DepthwiseConv2D(kernel_size=(3,3), strides=(2,2), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
     else:
-        x = DepthwiseConv2D(kernel_size=(3,3), strides=(1,1), dilation_rates=(dilation_rates[0],dilation_rates[0]), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
+        x = DepthwiseConv2D(kernel_size=(3,3), strides=(1,1), dilation_rate=(dilation_rates[0],dilation_rates[0]), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
     x = BatchNormalization(epsilon=1e-3, momentum=0.999)(x)
     x = ReLU(6.)(x)
-    if use_se: x = _se_block(x, filters=192, se_ratio=0.25, prefix="shunt_1_")
     x = Conv2D(64, kernel_size=(1,1), strides=(1,1), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
     x = BatchNormalization(epsilon=1e-3, momentum=0.999)(x)
     x = Conv2D(192, kernel_size=(1,1), strides=(1,1), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
@@ -117,7 +116,7 @@ def createArch5(input_shape, output_shape, num_stride_layers, use_se, dilation_r
     if num_stride_layers > 1:
         x = DepthwiseConv2D(kernel_size=(3,3), strides=(2,2), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
     else:
-        x = DepthwiseConv2D(kernel_size=(3,3), strides=(1,1), dilation_rates=(dilation_rates[1],dilation_rates[1]), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
+        x = DepthwiseConv2D(kernel_size=(3,3), strides=(1,1), dilation_rate=(dilation_rates[1],dilation_rates[1]), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
     x = BatchNormalization(epsilon=1e-3, momentum=0.999)(x)
     x = ReLU(6.)(x)
     x = Conv2D(64, kernel_size=(1,1), strides=(1,1), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
@@ -128,7 +127,7 @@ def createArch5(input_shape, output_shape, num_stride_layers, use_se, dilation_r
     if num_stride_layers > 2:
         x = DepthwiseConv2D(kernel_size=(3,3), strides=(2,2), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
     else:
-        x = DepthwiseConv2D(kernel_size=(3,3), strides=(1,1), dilation_rates=(dilation_rates[2],dilation_rates[2]), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
+        x = DepthwiseConv2D(kernel_size=(3,3), strides=(1,1), dilation_rate=(dilation_rates[2],dilation_rates[2]), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)
     x = BatchNormalization(epsilon=1e-3, momentum=0.999)(x)
     x = ReLU(6.)(x)
     x = Conv2D(output_shape[-1], kernel_size=(1,1), strides=(1,1), padding='same', use_bias=False, activation=None, kernel_initializer="he_normal", kernel_regularizer=regularizers.l2(4e-5))(x)

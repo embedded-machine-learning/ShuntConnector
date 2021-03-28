@@ -24,6 +24,7 @@ import logging
 # Libs
 import tensorflow.keras as keras
 from tensorflow.keras.callbacks import ReduceLROnPlateau
+import numpy as np
 
 # Own modules
 from shunt_connector.utils.custom_callbacks import SaveNestedModelCallback, LearningRateSchedulerCallback, PolyLearningRateCallback
@@ -120,7 +121,14 @@ def train_final_model(self):
                                     validation_steps=self.dataset_props['len_val_data']//self.train_final_params['batch_size'],
                                     verbose=1,
                                     callbacks=callbacks)
-                                    
+
+    history_folder = Path(self.folder_name_logging) / Path('training_final_model_history')
+    history_folder.mkdir(parents=True, exist_ok=True)
+
+    for key in history_final.history.keys():
+        np.save(history_folder / Path(key), history_final.history[key])
+
+
     self.final_model.load_weights(str(Path(self.folder_name_logging, "final_model_weights.h5")))
 
     keras.models.save_model(self.final_model, Path(self.folder_name_logging, "final_model.h5"))
@@ -144,8 +152,8 @@ def test_final_model(self):
 
     self.final_model.compile(loss=self.task_losses, metrics=self.task_metrics)
 
-    metrics = self.final_model.evaluate(self.dataset_val.batch(self.test_batchsize),
-                                        steps=self.dataset_props['len_val_data']//self.test_batchsize,
+    metrics = self.final_model.evaluate(self.dataset_test.batch(self.test_batchsize),
+                                        steps=self.dataset_props['len_test_data']//self.test_batchsize,
                                         verbose=1)
     self.accuracy_dict['final'] = {}
     for i, metric in enumerate(metrics):

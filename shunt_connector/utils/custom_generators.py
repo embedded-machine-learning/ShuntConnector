@@ -37,10 +37,10 @@ __maintainer__ = 'Bernhard Haas'
 __email__ = 'bernhardhaas55@gmail.com'
 __status__ = 'Release'
 
-def create_CIFAR_dataset(num_classes=10, is_training=True):
-    (x_train, y_train), (x_test, y_test) = load_and_preprocess_CIFAR(num_classes=num_classes)
+def create_CIFAR_dataset(num_classes=10, dataset_type='train'):
+    (x_train, y_train), (x_val, y_val), (x_test, y_test) = load_and_preprocess_CIFAR(num_classes=num_classes)
 
-    if is_training:
+    if dataset_type == 'train':
         datagen = keras.preprocessing.image.ImageDataGenerator(
             featurewise_center=False, 
             featurewise_std_normalization=False, 
@@ -55,7 +55,19 @@ def create_CIFAR_dataset(num_classes=10, is_training=True):
         ds.shuffle(1000)
         ds.repeat()
 
-    else:
+    elif dataset_type == 'val':
+        datagen = keras.preprocessing.image.ImageDataGenerator(
+            featurewise_center=False, 
+            featurewise_std_normalization=False, 
+            rotation_range=0.0,
+            width_shift_range=0.0, 
+            height_shift_range=0.0, 
+            vertical_flip=False,
+            horizontal_flip=False)
+        ds = tf.data.Dataset.from_generator(lambda: datagen.flow(x_val, y_val, batch_size=1), output_types=(tf.float32, tf.float32), output_shapes = ([1,32,32,3],[1,num_classes]))
+        ds = ds.unbatch()
+
+    elif dataset_type == 'test':
         datagen = keras.preprocessing.image.ImageDataGenerator(
             featurewise_center=False, 
             featurewise_std_normalization=False, 
@@ -66,6 +78,9 @@ def create_CIFAR_dataset(num_classes=10, is_training=True):
             horizontal_flip=False)
         ds = tf.data.Dataset.from_generator(lambda: datagen.flow(x_test, y_test, batch_size=1), output_types=(tf.float32, tf.float32), output_shapes = ([1,32,32,3],[1,num_classes]))
         ds = ds.unbatch()
+
+    else:
+        raise ValueError('Encountered invalid value for dataset_type!')
 
     options = tf.data.Options()
     options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.DATA

@@ -24,6 +24,7 @@ from pathlib import Path
 # Libs
 import tensorflow.keras as keras
 from tensorflow.keras.callbacks import ReduceLROnPlateau
+import numpy as np
 
 # Own modules
 from shunt_connector.utils.custom_callbacks import LearningRateSchedulerCallback, PolyLearningRateCallback
@@ -110,6 +111,12 @@ def train_original_model(self):
                                             verbose=1,
                                             callbacks=callbacks)
 
+    history_folder = Path(self.folder_name_logging) / Path('training_original_model_history')
+    history_folder.mkdir(parents=True, exist_ok=True)
+
+    for key in history_original.history.keys():
+        np.save(history_folder / Path(key), history_original.history[key])
+
     self.original_model.load_weights(str(Path(self.folder_name_logging, "original_model_weights.h5")))  # load best weights from training
 
     keras.models.save_model(self.original_model, Path(self.folder_name_logging, "original_model.h5"))
@@ -134,8 +141,8 @@ def test_original_model(self):
 
     self.original_model.compile(loss=self.task_losses, metrics=self.task_metrics)
 
-    metrics = self.original_model.evaluate(self.dataset_val.batch(self.test_batchsize),
-                                           steps=self.dataset_props['len_val_data']//self.test_batchsize,
+    metrics = self.original_model.evaluate(self.dataset_test.batch(self.test_batchsize),
+                                           steps=self.dataset_props['len_test_data']//self.test_batchsize,
                                            verbose=1)
 
     self.accuracy_dict['original'] = {}

@@ -35,6 +35,11 @@ __maintainer__ = 'Bernhard Haas'
 __email__ = 'bernhardhaas55@gmail.com'
 __status__ = 'Release'
 
+def create_weighted_cross_entropy_loss(factor=1):
+    def weighted_cross_entropy_loss(y_true, y_pred):
+        return factor*keras.losses.categorical_crossentropy(y_true, y_pred)
+    return weighted_cross_entropy_loss
+
 def create_negative_sum_loss(factor=1):
     def negative_sum(y_true, y_pred):
         return - factor*K.sum(y_pred)

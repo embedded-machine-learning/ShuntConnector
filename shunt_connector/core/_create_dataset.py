@@ -90,7 +90,8 @@ def create_dataset(self):
                                              self.dataset_params['input_size'][1],
                                              3)
         self.dataset_props['len_train_data'] = 2975
-        self.dataset_props['len_val_data'] = 500
+        self.dataset_props['len_test_data'] = 500   # test = val
+        self.dataset_props['len_val_data'] = 500   
         self.dataset_props['task'] = 'segmentation'
         self.test_batchsize = self.dataset_params['test_batchsize']
 
@@ -98,6 +99,7 @@ def create_dataset(self):
                                                                              self.dataset_props['input_shape'], is_training=True)
         self.dataset_val = custom_generators.create_cityscape_dataset(Path(self.dataset_params['path']),
                                                                            self.dataset_props['input_shape'], is_training=False)
+        self.datset_test = self.dataset_val
         print('Successfully loaded cityscapes dataset with input shape: {}'.format(self.dataset_props['input_shape']))
 
     self.load_task_losses_metrics() # initialize losses and metrics according to dataset_props['task']

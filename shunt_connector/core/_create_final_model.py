@@ -86,8 +86,8 @@ def create_final_model(self):
 
     if self.final_model_params['test_after_shunt_insertion']:
         print('Test shunt inserted model')
-        metrics = self.final_model.evaluate(self.dataset_val.batch(self.test_batchsize),
-                                            steps=self.len_val_data//self.test_batchsize,
+        metrics = self.final_model.evaluate(self.dataset_test.batch(self.test_batchsize),
+                                            steps=self.dataset_props['len_test_data']//self.test_batchsize,
                                             verbose=1)
 
         self.accuracy_dict['shunt_inserted'] = {}

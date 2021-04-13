@@ -61,9 +61,9 @@ def calc_knowledge_quotients(self):
 
     with self.activate_distribution_scope():
         self.know_quot = get_knowledge_quotients(model=self.original_model,
-                                                 datagen=self.dataset_val.batch(self.test_batchsize),
+                                                 datagen=self.dataset_test.batch(self.test_batchsize),
                                                  val_acc_model=list(self.accuracy_dict['original'].items())[-1][1],
-                                                 val_steps=self.dataset_props['len_val_data']//self.test_batchsize,
+                                                 val_steps=self.dataset_props['len_test_data']//self.test_batchsize,
                                                  metric=self.task_metrics[-1])
 
     logging.info('')

@@ -1,4 +1,5 @@
-tensorflow-gpu==2.4.0
+tensorflow-gpu
+sklearn
 matplotlib
 keras_applications
 -e .

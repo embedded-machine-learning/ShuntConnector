@@ -99,7 +99,7 @@ def create_dataset(self):
                                                                              self.dataset_props['input_shape'], is_training=True)
         self.dataset_val = custom_generators.create_cityscape_dataset(Path(self.dataset_params['path']),
                                                                            self.dataset_props['input_shape'], is_training=False)
-        self.datset_test = self.dataset_val
+        self.dataset_test = self.dataset_val
         print('Successfully loaded cityscapes dataset with input shape: {}'.format(self.dataset_props['input_shape']))
 
     self.load_task_losses_metrics() # initialize losses and metrics according to dataset_props['task']

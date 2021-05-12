@@ -26,7 +26,7 @@ from distutils.util import strtobool
 import tensorflow.keras as keras
 
 # Own modules
-from shunt_connector.models import mobile_net_v2, mobile_net_v3, deeplab_v3
+from shunt_connector.models import mobile_net_v2, mobile_net_v3, deeplab_v3, mobile_net_v2_ssd
 from shunt_connector.utils import calculate_flops
 
 __author__ = 'Bernhard Haas'
@@ -56,9 +56,9 @@ def create_original_model(self):
     if not self.dataset_props['input_shape']:
         raise ValueError('input_shape field in dataset_props not initialized! Either call create_dataset or set it manually.')
     if not self.task_losses:
-        raise ValueError('task_losses field not initialized! Either call create_dataest or set it manually.')
+        raise ValueError('task_losses field not initialized! Either call create_dataset or set it manually.')
     if not self.task_metrics:
-        raise ValueError('task_metrics field not initialized! Either call create_dataest or set it manually.')
+        raise ValueError('task_metrics field not initialized! Either call create_dataset or set it manually.')
 
     logging.info('')
     logging.info('####################################################################################################')
@@ -106,6 +106,12 @@ def create_original_model(self):
                                                        weights=is_pretrained_tf,
                                                        tf_weightspath=self.model_params['weightspath'],
                                                        backbone='MobileNetV3')
+
+        elif self.model_params['type'] == 'MobileNetV2_SSD':
+            self.original_model = mobile_net_v2_ssd.SSD(img_size=self.dataset_props['input_shape'][0],
+                                                        layer_widths=self.dataset_props['layer_widths'],
+                                                        num_boxes=self.dataset_props['num_boxes'],
+                                                        num_change_strides=self.model_params['number_change_stride_layes']).model()
 
         else: raise ValueError('Encountered invalid model type!')
 

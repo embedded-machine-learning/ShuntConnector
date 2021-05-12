@@ -146,8 +146,15 @@ class ShuntConnector():
             with self.distribute_strategy.scope():
                 self.task_metrics = [keras.metrics.categorical_crossentropy,
                                      keras.metrics.categorical_accuracy]
+
         elif self.dataset_props['task'] == 'segmentation':
             self.task_losses = [custom_loss_metric.segmentation_loss]
             with self.distribute_strategy.scope():
                 self.task_metrics = [custom_loss_metric.weighted_mean_iou(19)]
-        else: raise Exception('Task must be either classification|segmentation')
+
+        elif self.dataset_props['task'] == 'object_detection':
+            self.task_losses = [custom_loss_metric.SSD_loss]
+            with self.distribute_strategy.scope():
+                self.task_metrics = [custom_loss_metric.SSD_loss]
+
+        else: raise Exception('Task must be either classification|segmentatio|obejct_detection')

@@ -72,10 +72,16 @@ def train_final_model(self):
                          verbose=0)
     print('Using {} as the checkpoint monitor value!'.format("val_"+self.final_model.metrics_names[-1]))
 
+    # if a loss is used as the monitor value, it must run in 'min' mode
+    if 'loss' in self.final_model.metrics_names[-1]:
+        mode = 'min'
+        print('Using \'min\' mode!')
+    else:
+        mode = 'max'
     callback_checkpoint = keras.callbacks.ModelCheckpoint(str(Path(self.folder_name_logging, "final_model_weights.h5")),
                                                           save_best_only=True,
                                                           monitor="val_"+self.final_model.metrics_names[-1],
-                                                          mode='max',
+                                                          mode='min',
                                                           save_weights_only=True)
     self.final_model.trainable = True
 

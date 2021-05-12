@@ -35,6 +35,32 @@ __maintainer__ = 'Bernhard Haas'
 __email__ = 'bernhardhaas55@gmail.com'
 __status__ = 'Release'
 
+def SSD_loss(gt,y):
+    # shape of y is n * BOXES * output_channels
+    # shape of gt is n * BOXES * 5
+
+    # label is not required here in the standard implementation
+    # calculate the smooth L1 loss
+    def smoothL1(x,y,label):
+        diff = K.abs(x-y) #* K.switch(label == 10, label*1.0/BOXES, label)
+        result = K.switch(diff < 1, 0.5 * diff**2, diff - 0.5)
+        return K.mean(result)
+
+    def confidenceLoss(y,label):
+        unweighted_loss = tf.nn.sparse_softmax_cross_entropy_with_logits(label, y)
+        # class_weights = tf.constant([[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0/BOXES]]*BOXES])
+        # weights = tf.reduce_sum(class_weights * y, axis = -1)
+        # weighted_loss = unweighted_loss * weights
+        return K.mean(unweighted_loss)
+
+    loss = 0
+    # localisation loss
+    loss += smoothL1(y[:,:,-4:],gt[:,:,-4:],gt[:,:,0:1])
+    # confidence loss
+    loss += 10*confidenceLoss(y[:,:,:-4],tf.cast(gt[:,:,0],tf.int32))
+    return loss
+
+
 def create_weighted_cross_entropy_loss(factor=1):
     def weighted_cross_entropy_loss(y_true, y_pred):
         return factor*keras.losses.categorical_crossentropy(y_true, y_pred)

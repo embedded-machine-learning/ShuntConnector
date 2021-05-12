@@ -17,8 +17,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+
 # Built-in/Generic Imports
 from pathlib import Path
+
+# Libs
+import tensorflow as tf
+import tensorflow_datasets as tfds
 
 # Own modules
 from shunt_connector.utils import custom_generators
@@ -101,5 +106,34 @@ def create_dataset(self):
                                                                            self.dataset_props['input_shape'], is_training=False)
         self.dataset_test = self.dataset_val
         print('Successfully loaded cityscapes dataset with input shape: {}'.format(self.dataset_props['input_shape']))
+
+    if self.dataset_params['name'] == 'WIDER_FACE':
+
+        tfds.list_builders()
+        builder = tfds.builder('wider_face')
+        builder.download_and_prepare()
+        self.dataset_train = builder.as_dataset(split='train', shuffle_files=True)
+
+    if self.dataset_params['name'] == 'MNIST_Objects':
+
+        assert self.dataset_params['input_size'][0] == self.dataset_params['input_size'][1]
+
+        layer_widths = [28,14,7,4,2,1]
+        num_boxes = [3,3,3,3,3,3]
+
+        self.dataset_train, self.dataset_test = custom_generators.create_MNIST_Objects_dataset(self.dataset_params['input_size'][0], layer_widths=layer_widths, num_boxes=num_boxes)
+        self.dataset_val = self.dataset_test
+
+        self.dataset_props['num_classes'] = 10
+        self.dataset_props['input_shape'] = (self.dataset_params['input_size'][0], self.dataset_params['input_size'][1],3)
+        self.dataset_props['len_train_data'] = 600
+        self.dataset_props['len_val_data'] = 100
+        self.dataset_props['len_test_data'] = 100
+        self.dataset_props['task'] = 'object_detection'
+        self.dataset_props['layer_widths'] = layer_widths
+        self.dataset_props['num_boxes'] = num_boxes
+        self.test_batchsize = self.dataset_params['test_batchsize']
+
+        print('Successfully loaded MNIST-objects dataset with input shape: {}'.format(self.dataset_props['input_shape']))
 
     self.load_task_losses_metrics() # initialize losses and metrics according to dataset_props['task']

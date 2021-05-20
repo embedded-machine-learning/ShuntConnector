@@ -6,8 +6,6 @@ Shunt connections are applicable to any residual convolutional neural network ar
 
 This repository was created as part of a master thesis, which includes more details on design choices and the limits of the implementation. It can be found under this [link](https://repositum.tuwien.at/bitstream/20.500.12708/17369/1/Haas%20Bernhard%20-%202021%20-%20Compressing%20MobileNet%20With%20Shunt%20Connections%20for%20NVIDIA...pdf).
 
-This repository was created as part of a master thesis, which includes more details on design choices and the limits of the implementation. It can be found under this [link](https://repositum.tuwien.at/bitstream/20.500.12708/17369/1/Haas%20Bernhard%20-%202021%20-%20Compressing%20MobileNet%20With%20Shunt%20Connections%20for%20NVIDIA...pdf).
-
 ## Description
 
 The shunt connector procedure consits of 10 steps:

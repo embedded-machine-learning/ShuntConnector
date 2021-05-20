@@ -30,11 +30,11 @@ import tensorflow.keras as keras
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Conv2D, Lambda, Input, Activation,Add, BatchNormalization, AveragePooling2D, Multiply
 from tensorflow.keras import backend as K
+from tensorflow.keras.utils import get_custom_objects
 
 # Own modules
-from shunt_connector.models.mobile_net_v3 import _inverted_res_block as _inverted_res_block_v3
-from shunt_connector.models.mobile_net_v3 import hard_swish, hard_sigmoid, relu, _depth
-from shunt_connector.utils.modify_model import modify_model
+from model.mobile_net_v3 import _inverted_res_block as _inverted_res_block_v3
+from model.mobile_net_v3 import hard_swish, hard_sigmoid, relu, _depth
 
 __author__ = 'Bernhard Haas'
 __copyright__ = 'Copyright 2021, Christian Doppler Laboratory for ' \
@@ -55,7 +55,7 @@ def _make_divisible(v, divisor, min_value=None):
         new_v += divisor
     return new_v
 
-def deeplab_head_v3(x, img_input, features_for_skip_connection):
+def deeplab_head_v3(x, img_input, features_for_skip_connection, classes):
 
     input_shape = K.int_shape(img_input)
 
@@ -78,9 +78,9 @@ def deeplab_head_v3(x, img_input, features_for_skip_connection):
                                                     (input_shape[1]//8+1,input_shape[2]//8+1),
                                                     method='bilinear',
                                                     align_corners=True), name='Resize_2')(b)
-    x = Conv2D(19, (1, 1), padding='same', name='decoder_decoder_conv0')(x)
+    x = Conv2D(classes, (1, 1), padding='same', name='decoder_decoder_conv0')(x)
 
-    additional_features = Conv2D(19,
+    additional_features = Conv2D(classes,
                                  (1,1),
                                  padding='same',
                                  name='decoder_feature_projection0',
@@ -192,7 +192,7 @@ def Deeplabv3(weights='cityscapes',
         x = BatchNormalization(epsilon=1e-3, momentum=0.999, name='Conv_1_BN')(x)
         x = Activation(hard_swish, name='Conv_1_HardSwish')(x)
 
-        x = deeplab_head_v3(x, img_input, features_for_skip_connection)
+        x = deeplab_head_v3(x, img_input, features_for_skip_connection, classes)
 
     model = Model(img_input, x, name='deeplabv3plus')
 

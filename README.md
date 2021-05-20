@@ -1,5 +1,9 @@
 # Shunt Connector
 
+This repository implements the neural network compression technique called 'Shunt connection' using Keras and TensorFlow 2.x as its backend. Shunt connections were first introduced by [Singh et al.](https://www.researchgate.net/publication/334056710_Shunt_connection_An_intelligent_skipping_of_contiguous_blocks_for_optimizing_MobileNet-V2).
+
+Shunt connections are applicable to any residual convolutional neural network architecture.
+
 ## Description
 
 The shunt connector procedure consits of 10 steps:
@@ -35,7 +39,7 @@ If you want to install just the shunt connector package, run:
 
 ### Basic Requirements
 
-Tensorflow 2.X, tested for Tensorflow >= 2.3
+TensorFlow 2.X, tested for TensorFlow 2.3
 
 
 ## Examples
@@ -61,7 +65,7 @@ A basic shunt insertion on the built in network architectures and datasets can b
 
 ### Datasets
 
-CIFAR10 and CIFAR100 experiments can be run out of the box, the datasets will be downloaded through Keras. Using cityscapes, requires preparing the dataset like in the official tensorflow [repository](https://github.com/tensorflow/models/tree/master/research/deeplab/datasets).
+CIFAR10 and CIFAR100 experiments can be run out of the box, the datasets will be downloaded through Keras. Using cityscapes, requires preparing the dataset like in the official TensorFlow [repository](https://github.com/tensorflow/models/tree/master/research/deeplab/datasets).
 
 Other datasets have to be loaded through custom code by replacing the ***create_dataset()*** call accordingly.
 
@@ -92,3 +96,10 @@ The example ***create_s_and_e_shunt_model.ipynb*** shows this process for using 
 ### Custom training procedures
 
 It is suggested to reuse as much code as possible when writing custom training procedures. How this can be done effficiently can be seen in ***train_final_ACE.py*** or ***train_final_dark_knowledge.ipynb*** in the examples folder, where the training of the final model was replaced by a knowledge distillation step.
+
+## Additional Information
+
+### Loading weights from a TensorFlow-Checkpoint file
+
+Loading the weights of a TF1-Checkpoint file in Keras can be done by converting the tensors saved in the checkpoint files to numpy arrays and save them as .npy files. The script ***utils/convert_checkpoint_to_npy.py*** does this for the official TF-Slim model of the DeeplabV3-MobileNetV3 architecture, which can be found [here](https://github.com/tensorflow/models/blob/master/research/deeplab/g3doc/model_zoo.md).
+

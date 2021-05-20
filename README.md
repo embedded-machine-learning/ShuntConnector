@@ -2,7 +2,9 @@
 
 This repository implements the neural network compression technique called 'Shunt connection' using Keras and TensorFlow 2.x as its backend. Shunt connections were first introduced by [Singh et al.](https://www.researchgate.net/publication/334056710_Shunt_connection_An_intelligent_skipping_of_contiguous_blocks_for_optimizing_MobileNet-V2).
 
-Shunt connections are applicable to any residual convolutional neural network architecture.
+Shunt connections are applicable to any residual convolutional neural network architecture. This repository tries to apply shunt connections in a general setting allowing to use custom datasets and custom models.
+
+This repository was created as part of a master thesis, which includes more details on design choices and the limits of the implementation. It can be found under this [link](https://repositum.tuwien.at/bitstream/20.500.12708/17369/1/Haas%20Bernhard%20-%202021%20-%20Compressing%20MobileNet%20With%20Shunt%20Connections%20for%20NVIDIA...pdf).
 
 This repository was created as part of a master thesis, which includes more details on design choices and the limits of the implementation. It can be found under this [link](https://repositum.tuwien.at/bitstream/20.500.12708/17369/1/Haas%20Bernhard%20-%202021%20-%20Compressing%20MobileNet%20With%20Shunt%20Connections%20for%20NVIDIA...pdf).
 

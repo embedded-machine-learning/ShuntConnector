@@ -1,0 +1,5 @@
+tensorflow-gpu
+sklearn
+matplotlib
+keras_applications
+-e .

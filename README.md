@@ -6,6 +6,14 @@ Shunt connections are applicable to any residual convolutional neural network ar
 
 This repository was created as part of a master thesis, which includes more details on design choices and the limits of the implementation. It can be found under this [link](https://repositum.tuwien.at/bitstream/20.500.12708/17369/1/Haas%20Bernhard%20-%202021%20-%20Compressing%20MobileNet%20With%20Shunt%20Connections%20for%20NVIDIA...pdf).
 
+Cite: 
+
+`Bernhard Haas, Alexander Wendt, Axel Jantsch and Matthias Wess: Neural Network Compression Through Shunt Connections and Knowledge Distillation for Semantic Segmentation Problems, in Proceedings of Artificial Intelligence Applications and Innovations, 17th IFIP WG 12.5 International Conference, Greece (online), pp. 349-361, 2021, doi: https://doi.org/10.1007/978-3-030-79150-6`
+
+and
+
+`Bernhard Haas, Compressing MobileNet With Shunt Connections for NVIDIA Hardware, Master Thesis, TU Wien, 2021, url: https://publik.tuwien.ac.at/files/publik_295948.pdf`
+
 ## Description
 
 The shunt connector procedure consits of 10 steps:
